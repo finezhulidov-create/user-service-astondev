@@ -1,4 +1,4 @@
-package com.zhulidov.user_service_astondev.dao.interfaces;
+package com.zhulidov.user_service_astondev.interfaces;
 
 import com.zhulidov.user_service_astondev.model.User;
 
@@ -8,6 +8,6 @@ public interface UserService {
     void saveUser(User user);
     User getUserById(Long id);
     List<User> getAllUsers();
-    User updateUser(User user);
+    void updateUser(User user);
     void deleteUser(Long id);
 }

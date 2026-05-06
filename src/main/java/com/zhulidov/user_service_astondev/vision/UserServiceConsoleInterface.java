@@ -1,108 +1,146 @@
 package com.zhulidov.user_service_astondev.vision;
 
-import com.zhulidov.user_service_astondev.dao.UserDAO;
+import com.zhulidov.user_service_astondev.config.AppComponent;
+import com.zhulidov.user_service_astondev.config.Inject;
+import com.zhulidov.user_service_astondev.config.PostConstruct;
+import com.zhulidov.user_service_astondev.interfaces.UserService;
 import com.zhulidov.user_service_astondev.model.User;
+import com.zhulidov.user_service_astondev.util.ConsoleRenderer;
 import com.zhulidov.user_service_astondev.util.HibernateUtil;
 
-import java.io.Console;
-import java.util.List;
-import java.util.Scanner;
+@AppComponent
+public class UserServiceConsoleInterface  {
+    @Inject
+    private  UserService userService;
+    @Inject
+    private  ConsoleRenderer renderer;
+    private boolean exit = false;
 
-public class UserServiceConsoleInterface implements Runnable {
-    @Override
+    public UserServiceConsoleInterface(UserService userService, ConsoleRenderer renderer) {
+        this.userService = userService;
+        this.renderer = renderer;
+    }
+
+    public UserServiceConsoleInterface() {
+    }
+
+    @PostConstruct
     public  void run() {
-        UserDAO userDAO = new UserDAO();
-        Scanner scanner = new Scanner(System.in);
-        boolean exit = false;
-
         while (!exit) {
-            System.out.println("\n=== Консольное приложение с Hibernate ===");
-            System.out.println("1. Создать пользователя");
-            System.out.println("2. Показать всех пользователей");
-            System.out.println("3. Найти пользователя по ID");
-            System.out.println("4. Обновить пользователя");
-            System.out.println("5. Удалить пользователя");
-            System.out.println("0. Выход");
-            System.out.print("Выберите действие: ");
-
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // очистка буфера
-
-            switch (choice) {
-                case 1:
-                    createUser(userDAO, scanner);
-                    break;
-                case 2:
-                    showAllUsers(userDAO);
-                    break;
-                case 3:
-                    findUserById(userDAO, scanner);
-                    break;
-                case 4:
-                    updateUser(userDAO, scanner);
-                    break;
-                case 5:
-                    deleteUser(userDAO, scanner);
-                    break;
-                case 0:
-                    exit = true;
-                    System.out.println("Выход из приложения...");
-                    break;
-                default:
-                    System.out.println("Неверный выбор. Попробуйте снова.");
-            }
+           renderer.printMenu();
+            int choice = renderer.promptInt("");
+            handleChoice(choice);
+            
         }
-
-        HibernateUtil.shutdown(); // Закрытие SessionFactory
-        scanner.close();
+        
+        renderer.printMessage("До свидания!");
+        renderer.close();
+        HibernateUtil.shutdown();
     }
 
-    private void deleteUser(UserDAO userDAO, Scanner scanner) {
-
-    }
-
-    private void updateUser(UserDAO userDAO, Scanner scanner) {
+    private void handleChoice(int choice) {
+        
+        switch (choice) {
+            case 1:
+                createUser();
+                break;
+            case 2:
+                showAllUsers();
+                break;
+            case 3:
+                findUserById();
+                break;
+            case 4:
+                updateUser();
+                break;
+            case 5:
+                deleteUser();
+                break;
+            case 0:
+                exit = true;
+                renderer.printMessage("Выход из приложения...");
+                break;
+            default:
+                renderer.printMessage("Неверный выбор. Попробуйте снова.");
+        }
         
     }
 
-    private void findUserById(UserDAO userDAO, Scanner scanner) {
-        System.out.println("Введите ID пользователя: ");
-        long id = scanner.nextLong();
-      User user =   userDAO.getUserById(id);
+
+    private void deleteUser() {
+        long id = renderer.promptLong("Введите ID пользователя: ");
+
+        User user = userService.getUserById(id);
+        if (user != null){
+            userService.deleteUser(id);
+            renderer.printMessage("Пользователь успешно удален");
+        } else {
+            renderer.printMessage("Пользователя с таким ID: " + id + " не существует");
+        }
+    }
+
+
+
+    private void updateUser() {
+        long id = renderer.promptLong("Введите ID пользователя: ");
+
+        User user = userService.getUserById(id);
+
+        choiceNameEmailOrAge(user);
+        userService.updateUser(user);
+        renderer.printMessage("Пользователь обновлен");
+    }
+
+    private  void choiceNameEmailOrAge( User user) {
+
+        String choice = renderer.updateChoice();
+        switch (choice){
+            case "1" -> {
+              String name = renderer.promptInput("Введите новый емэйл");
+                user.setName(name);
+            }
+            case "2" -> {
+                String email = renderer.promptInput("Введите новое Имя");
+                user.setEmail(email);
+            }
+            case "3" -> {
+                int age = renderer.promptInt("Введите новый возраст");
+                user.setAge(age);
+            }
+        }
+    }
+
+    private void findUserById() {
+        long id = renderer.promptLong("Введите ID пользователя: ");
+      User user =   userService.getUserById(id);
       if (user != null){
-          System.out.println("Найденный пользователь: " + user);
+          renderer.printMessage("Найденный пользователь: " + user);
       } else {
-          System.out.println("Пользователя с таким ID: "+ id +" не существует");
+          renderer.printMessage("Пользователя с таким ID: " + id + " не существует");
       }
     }
 
-    private void showAllUsers(UserDAO userDAO) {
-
-         userDAO.getAllUsers()
-                .forEach(u-> System.out.print(u.getId()+" "
-                        + u.getName() + " "+ u.getEmail()+ " " + u.getAge()));
+    private void showAllUsers() {
+        renderer.printUsersTable(userService.getAllUsers());
 
     }
 
-    private void createUser(UserDAO userDAO, Scanner scanner) {
-        System.out.println("Введите имя: ");
-        String name = scanner.nextLine();
-        scanner.nextLine();
-        System.out.println("Введите емэйл: ");
-        String email = scanner.nextLine();
-        scanner.nextLine();
-        System.out.println("Введите возраст: ");
-        int age = scanner.nextInt();
-        scanner.nextLine();
+    private void createUser() {
+        String name = renderer.promptInput("Введите имя: ");
+        String email = renderer.promptInput("Введите email: ");
+        int age = renderer.promptInt("Введите возраст: ");
+
 
         if (name != null && email != null && age != 0){
             User user = new User(name,email,age);
-            userDAO.saveUser(user);
-            System.out.println("Пользователь успешно создан");
+            userService.saveUser(user);
+            renderer.printMessage("Пользователь успешно создан");
         } else {
-            System.out.println("Не верные данные");
+            renderer.printMessage("Не верные данные");
         }
     }
+
+
 }
 
 
