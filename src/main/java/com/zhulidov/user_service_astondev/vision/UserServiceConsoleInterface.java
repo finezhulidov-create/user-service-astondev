@@ -10,9 +10,10 @@ import com.zhulidov.user_service_astondev.util.HibernateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 @AppComponent
 public class UserServiceConsoleInterface  {
-    private static final Logger log = LoggerFactory.getLogger(UserServiceConsoleInterface.class);
+    private final Logger log = LoggerFactory.getLogger(UserServiceConsoleInterface.class);
     @Inject
     private  UserService userService;
     @Inject
@@ -31,9 +32,10 @@ public class UserServiceConsoleInterface  {
     public  void run() {
         while (!exit) {
            renderer.printMenu();
+
             int choice = renderer.promptInt("");
             handleChoice(choice);
-            
+
         }
         
         renderer.printMessage("До свидания!");
@@ -64,7 +66,7 @@ public class UserServiceConsoleInterface  {
                 log.info("Выход из приложения...");
                 break;
             default:
-                renderer.printMessage("Неверный выбор. Попробуйте снова.");
+                log.info("Неверный выбор. Попробуйте снова.");
         }
         
     }
@@ -76,9 +78,9 @@ public class UserServiceConsoleInterface  {
         User user = userService.getUserById(id);
         if (user != null){
             userService.deleteUser(id);
-            renderer.printMessage("Пользователь успешно удален");
+           log.info("Пользователь успешно удален");
         } else {
-            log.warn("Пользователя с таким ID: {} не существует", id);
+            log.info("Пользователя с таким ID: {}  не существует", id);
         }
     }
 
@@ -119,7 +121,7 @@ public class UserServiceConsoleInterface  {
       if (user != null){
           log.info("Найденный пользователь: {}", user);
       } else {
-          log.info("Пользователя с таким ID: {} не существует", id);
+          log.warn("Пользователя с таким ID: {}  не существует", id);
       }
     }
 
@@ -139,7 +141,7 @@ public class UserServiceConsoleInterface  {
             userService.saveUser(user);
             log.info("Пользователь успешно создан");
         } else {
-            log.error("Не верные данные");
+           log.warn("Не верные данные");
         }
     }
 

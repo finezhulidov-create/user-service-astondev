@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 public class Application {
     public static void run(Class<?> mainComponent )  {
         try {
-            String packageToscan = mainComponent.getPackage().getName();
+            String packageToscan = mainComponent.getPackage().getName().split("\\.")[0];
             JavaConfig config = new JavaConfig(packageToscan);
             ApplicationContext context = new ApplicationContext(config);
             ObjectFactory factory = new ObjectFactory(context);

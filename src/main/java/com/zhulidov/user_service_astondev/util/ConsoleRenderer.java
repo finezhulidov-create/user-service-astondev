@@ -10,7 +10,8 @@ public class ConsoleRenderer {
 
     private final Scanner scanner = new Scanner(System.in);
 
-
+    public ConsoleRenderer() {
+    }
 
     public  void printMenu() {
         System.out.println("\n=== Консольное приложение с Hibernate ===");
