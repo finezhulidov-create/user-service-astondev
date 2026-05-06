@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class UserServiceAstondevApplication {
 
-    public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args)  {
         Application.run(UserServiceConsoleInterface.class);
     }
 
