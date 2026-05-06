@@ -38,13 +38,8 @@ public class ObjectFactory {
         configurators.forEach(objectConfigurator -> {
             try {
                 objectConfigurator.configure(t, context);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            } catch (InvocationTargetException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            } catch (InstantiationException e) {
+            } catch (IllegalAccessException | InstantiationException | InvocationTargetException |
+                     NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
         });

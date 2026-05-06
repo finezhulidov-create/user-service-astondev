@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 public class UserServiceAstondevApplication {
 
     public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Application.run(UserServiceConsoleInterface.class, "com.zhulidov");
+        Application.run(UserServiceConsoleInterface.class);
     }
 
 }

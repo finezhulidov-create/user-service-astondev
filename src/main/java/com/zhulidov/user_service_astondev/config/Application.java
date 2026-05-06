@@ -3,7 +3,8 @@ package com.zhulidov.user_service_astondev.config;
 import java.lang.reflect.InvocationTargetException;
 
 public class Application {
-    public static void run(Class<?> mainComponent, String packageToscan) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static void run(Class<?> mainComponent ) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        String packageToscan = mainComponent.getPackage().getName();
         JavaConfig config = new JavaConfig(packageToscan);
         ApplicationContext context = new ApplicationContext(config);
         ObjectFactory factory = new ObjectFactory(context);
