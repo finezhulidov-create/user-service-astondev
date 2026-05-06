@@ -1,5 +1,7 @@
 package com.zhulidov.user_service_astondev.config;
 
+import com.zhulidov.user_service_astondev.config.annotations.PostConstruct;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;

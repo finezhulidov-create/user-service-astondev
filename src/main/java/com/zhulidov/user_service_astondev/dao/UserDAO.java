@@ -1,7 +1,7 @@
 package com.zhulidov.user_service_astondev.dao;
 
 
-import com.zhulidov.user_service_astondev.config.AppComponent;
+import com.zhulidov.user_service_astondev.config.annotations.AppComponent;
 import com.zhulidov.user_service_astondev.model.User;
 import com.zhulidov.user_service_astondev.util.HibernateUtil;
 import org.hibernate.Session;

@@ -1,8 +1,8 @@
 package com.zhulidov.user_service_astondev.vision;
 
-import com.zhulidov.user_service_astondev.config.AppComponent;
-import com.zhulidov.user_service_astondev.config.Inject;
-import com.zhulidov.user_service_astondev.config.PostConstruct;
+import com.zhulidov.user_service_astondev.config.annotations.AppComponent;
+import com.zhulidov.user_service_astondev.config.annotations.Inject;
+import com.zhulidov.user_service_astondev.config.annotations.PostConstruct;
 import com.zhulidov.user_service_astondev.interfaces.UserService;
 import com.zhulidov.user_service_astondev.model.User;
 import com.zhulidov.user_service_astondev.util.ConsoleRenderer;

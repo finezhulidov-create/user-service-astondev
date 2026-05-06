@@ -1,4 +1,4 @@
-package com.zhulidov.user_service_astondev.config;
+package com.zhulidov.user_service_astondev.config.annotations;
 
 import java.lang.annotation.*;
 

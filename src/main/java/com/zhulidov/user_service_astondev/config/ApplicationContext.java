@@ -1,5 +1,7 @@
 package com.zhulidov.user_service_astondev.config;
 
+import com.zhulidov.user_service_astondev.config.annotations.AppComponent;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;

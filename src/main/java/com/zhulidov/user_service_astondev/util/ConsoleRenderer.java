@@ -1,7 +1,6 @@
 package com.zhulidov.user_service_astondev.util;
 
-import com.zhulidov.user_service_astondev.config.AppComponent;
-import com.zhulidov.user_service_astondev.config.Inject;
+import com.zhulidov.user_service_astondev.config.annotations.AppComponent;
 import com.zhulidov.user_service_astondev.model.User;
 
 import java.util.List;

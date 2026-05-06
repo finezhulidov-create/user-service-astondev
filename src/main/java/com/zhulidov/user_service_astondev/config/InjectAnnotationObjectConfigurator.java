@@ -1,5 +1,7 @@
 package com.zhulidov.user_service_astondev.config;
 
+import com.zhulidov.user_service_astondev.config.annotations.Inject;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
