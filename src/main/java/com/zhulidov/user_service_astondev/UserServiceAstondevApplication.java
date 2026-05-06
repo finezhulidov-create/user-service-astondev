@@ -13,11 +13,7 @@ import java.util.Scanner;
 public class UserServiceAstondevApplication {
 
     public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        ApplicationContext context = Application.run("com.zhulidov");
-        UserServiceConsoleInterface console = context.getObject(UserServiceConsoleInterface.class);
-        console.run();
-
-
+        Application.run(UserServiceConsoleInterface.class, "com.zhulidov");
     }
 
 }
