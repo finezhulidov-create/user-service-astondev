@@ -1,6 +1,7 @@
 package com.zhulidov.user_service_astondev.util;
 
 import com.zhulidov.user_service_astondev.config.annotations.AppComponent;
+import com.zhulidov.user_service_astondev.dto.UserDto;
 import com.zhulidov.user_service_astondev.model.User;
 
 import java.util.List;
@@ -43,16 +44,16 @@ public class ConsoleRenderer {
         scanner.close();
     }
 
-    public void printUsersTable(List<User> allUsers) {
+    public void printUsersTable(List<UserDto> allUsers) {
         System.out.println();
         System.out.println();
         System.out.printf("%-5s %-15s %-25s %-8s%n", "ID", "Имя", "Email", "Возраст");
         System.out.println("-".repeat(60));
         allUsers.forEach(u -> {
-            String name = truncate(u.getName(), 14);
-            String email = truncate(u.getEmail(), 24);
+            String name = truncate(u.name(), 14);
+            String email = truncate(u.email(), 24);
             System.out.printf("%-5d %-15s %-25s %-8d%n",
-                    u.getId(), name, email, u.getAge());
+                   u.id(), name, email, u.age());
         });
         System.out.println("-".repeat(60));
     }

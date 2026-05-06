@@ -3,10 +3,12 @@ package com.zhulidov.user_service_astondev.vision;
 import com.zhulidov.user_service_astondev.config.annotations.AppComponent;
 import com.zhulidov.user_service_astondev.config.annotations.Inject;
 import com.zhulidov.user_service_astondev.config.annotations.PostConstruct;
+import com.zhulidov.user_service_astondev.dto.UserDto;
 import com.zhulidov.user_service_astondev.interfaces.UserService;
 import com.zhulidov.user_service_astondev.model.User;
 import com.zhulidov.user_service_astondev.util.ConsoleRenderer;
 import com.zhulidov.user_service_astondev.util.HibernateUtil;
+import com.zhulidov.user_service_astondev.util.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,11 +20,15 @@ public class UserServiceConsoleInterface  {
     private  UserService userService;
     @Inject
     private  ConsoleRenderer renderer;
+    @Inject
+    private Mapper mapper;
+
     private boolean exit = false;
 
-    public UserServiceConsoleInterface(UserService userService, ConsoleRenderer renderer) {
+    public UserServiceConsoleInterface(UserService userService, ConsoleRenderer renderer, Mapper mapper) {
         this.userService = userService;
         this.renderer = renderer;
+        this.mapper = mapper;
     }
 
     public UserServiceConsoleInterface() {
@@ -75,7 +81,7 @@ public class UserServiceConsoleInterface  {
     private void deleteUser() {
         long id = renderer.promptLong("Введите ID пользователя: ");
 
-        User user = userService.getUserById(id);
+        UserDto user = userService.getUserById(id);
         if (user != null){
             userService.deleteUser(id);
            log.info("Пользователь успешно удален");
@@ -89,24 +95,24 @@ public class UserServiceConsoleInterface  {
     private void updateUser() {
         long id = renderer.promptLong("Введите ID пользователя: ");
 
-        User user = userService.getUserById(id);
-
-        choiceNameEmailOrAge(user);
-        userService.updateUser(user);
+        UserDto user = userService.getUserById(id);
+        User user1 = mapper.toEntity(user);
+        choiceNameEmailOrAge(user1);
+        userService.updateUser(mapper.toDto(user1));
         log.info("Пользователь обновлен");
     }
 
-    private  void choiceNameEmailOrAge( User user) {
+    private  void choiceNameEmailOrAge(User user) {
 
         String choice = renderer.updateChoice();
         switch (choice){
             case "1" -> {
               String name = renderer.promptInput("Введите новый емэйл");
-                user.setName(name);
+                user.setEmail(name);
             }
             case "2" -> {
                 String email = renderer.promptInput("Введите новое Имя");
-                user.setEmail(email);
+                user.setName(email);
             }
             case "3" -> {
                 int age = renderer.promptInt("Введите новый возраст");
@@ -117,7 +123,7 @@ public class UserServiceConsoleInterface  {
 
     private void findUserById() {
         long id = renderer.promptLong("Введите ID пользователя: ");
-      User user =   userService.getUserById(id);
+      UserDto user =   userService.getUserById(id);
       if (user != null){
           log.info("Найденный пользователь: {}", user);
       } else {
@@ -138,7 +144,7 @@ public class UserServiceConsoleInterface  {
 
         if (name != null && email != null && age != 0){
             User user = new User(name,email,age);
-            userService.saveUser(user);
+            userService.saveUser(mapper.toDto(user));
             log.info("Пользователь успешно создан");
         } else {
            log.warn("Не верные данные");
