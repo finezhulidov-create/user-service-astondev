@@ -12,6 +12,10 @@ public class UserServiceImpl implements UserService {
    @Inject
     private  UserDAO userDAO;
 
+    public UserServiceImpl(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
     public UserServiceImpl() {
     }
 

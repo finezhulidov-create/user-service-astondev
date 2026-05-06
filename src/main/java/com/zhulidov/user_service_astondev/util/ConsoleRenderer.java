@@ -8,7 +8,7 @@ import java.util.Scanner;
 @AppComponent
 public class ConsoleRenderer {
 
-    private  Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
 
 

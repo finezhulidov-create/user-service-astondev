@@ -7,9 +7,12 @@ import com.zhulidov.user_service_astondev.interfaces.UserService;
 import com.zhulidov.user_service_astondev.model.User;
 import com.zhulidov.user_service_astondev.util.ConsoleRenderer;
 import com.zhulidov.user_service_astondev.util.HibernateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @AppComponent
 public class UserServiceConsoleInterface  {
+    private static final Logger log = LoggerFactory.getLogger(UserServiceConsoleInterface.class);
     @Inject
     private  UserService userService;
     @Inject
@@ -58,7 +61,7 @@ public class UserServiceConsoleInterface  {
                 break;
             case 0:
                 exit = true;
-                renderer.printMessage("Выход из приложения...");
+                log.info("Выход из приложения...");
                 break;
             default:
                 renderer.printMessage("Неверный выбор. Попробуйте снова.");
@@ -75,7 +78,7 @@ public class UserServiceConsoleInterface  {
             userService.deleteUser(id);
             renderer.printMessage("Пользователь успешно удален");
         } else {
-            renderer.printMessage("Пользователя с таким ID: " + id + " не существует");
+            log.warn("Пользователя с таким ID: {} не существует", id);
         }
     }
 
@@ -88,7 +91,7 @@ public class UserServiceConsoleInterface  {
 
         choiceNameEmailOrAge(user);
         userService.updateUser(user);
-        renderer.printMessage("Пользователь обновлен");
+        log.info("Пользователь обновлен");
     }
 
     private  void choiceNameEmailOrAge( User user) {
@@ -114,9 +117,9 @@ public class UserServiceConsoleInterface  {
         long id = renderer.promptLong("Введите ID пользователя: ");
       User user =   userService.getUserById(id);
       if (user != null){
-          renderer.printMessage("Найденный пользователь: " + user);
+          log.info("Найденный пользователь: {}", user);
       } else {
-          renderer.printMessage("Пользователя с таким ID: " + id + " не существует");
+          log.info("Пользователя с таким ID: {} не существует", id);
       }
     }
 
@@ -134,9 +137,9 @@ public class UserServiceConsoleInterface  {
         if (name != null && email != null && age != 0){
             User user = new User(name,email,age);
             userService.saveUser(user);
-            renderer.printMessage("Пользователь успешно создан");
+            log.info("Пользователь успешно создан");
         } else {
-            renderer.printMessage("Не верные данные");
+            log.error("Не верные данные");
         }
     }
 
