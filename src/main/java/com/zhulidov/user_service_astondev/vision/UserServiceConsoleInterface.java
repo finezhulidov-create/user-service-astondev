@@ -22,8 +22,17 @@ public class UserServiceConsoleInterface  {
     private  ConsoleRenderer renderer;
     @Inject
     private Mapper mapper;
+    @Inject
+    private MenuHandler menuHandler;
 
     private boolean exit = false;
+
+    public UserServiceConsoleInterface(UserService userService, ConsoleRenderer renderer, Mapper mapper, MenuHandler menuHandler) {
+        this.userService = userService;
+        this.renderer = renderer;
+        this.mapper = mapper;
+        this.menuHandler = menuHandler;
+    }
 
     public UserServiceConsoleInterface(UserService userService, ConsoleRenderer renderer, Mapper mapper) {
         this.userService = userService;
@@ -37,10 +46,8 @@ public class UserServiceConsoleInterface  {
     @PostConstruct
     public  void run() {
         while (!exit) {
-           renderer.printMenu();
-
-            int choice = renderer.promptInt("");
-            handleChoice(choice);
+           Operation operation = menuHandler.showMainMenu();
+           handleChoice(operation);
 
         }
         
@@ -49,32 +56,19 @@ public class UserServiceConsoleInterface  {
         HibernateUtil.shutdown();
     }
 
-    private void handleChoice(int choice) {
-        
-        switch (choice) {
-            case 1:
-                createUser();
-                break;
-            case 2:
-                showAllUsers();
-                break;
-            case 3:
-                findUserById();
-                break;
-            case 4:
-                updateUser();
-                break;
-            case 5:
-                deleteUser();
-                break;
-            case 0:
-                exit = true;
-                log.info("Выход из приложения...");
-                break;
-            default:
-                log.info("Неверный выбор. Попробуйте снова.");
+    private void handleChoice(Operation operation){
+        if (operation == null){
+            log.info("Неверный выбор");
+            return;
         }
-        
+        switch (operation){
+            case CREATE -> createUser();
+            case READ_ALL -> showAllUsers();
+            case READ_BY_ID -> findUserById();
+            case UPDATE -> updateUser();
+            case DELETE -> deleteUser();
+            case EXIT -> exit = true;
+        }
     }
 
 
