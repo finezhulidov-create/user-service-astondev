@@ -8,6 +8,7 @@ import com.zhulidov.user_service_astondev.interfaces.UserService;
 import com.zhulidov.user_service_astondev.model.User;
 import com.zhulidov.user_service_astondev.util.Mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @AppComponent
 public class UserServiceImpl implements UserService {
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService {
         user.setAge(userDto.age());
         user.setName(userDto.name());
         user.setEmail(userDto.email());
+        user.setCreatedAt(LocalDateTime.now());
         userDAO.saveUser(user);
     }
 

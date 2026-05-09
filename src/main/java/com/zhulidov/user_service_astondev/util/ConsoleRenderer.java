@@ -52,8 +52,8 @@ public class ConsoleRenderer {
         allUsers.forEach(u -> {
             String name = truncate(u.name(), 14);
             String email = truncate(u.email(), 24);
-            System.out.printf("%-5d %-15s %-25s %-8d%n",
-                   u.id(), name, email, u.age());
+            System.out.printf("%-5d %-15s %-25s %-8d%n %-79S" ,
+                   u.id(), name, email, u.age(), u.createdAt().toString());
         });
         System.out.println("-".repeat(60));
     }
