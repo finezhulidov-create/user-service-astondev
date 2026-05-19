@@ -8,10 +8,13 @@ import com.zhulidov.user_service_astondev.util.HibernateUtil;
 @AppComponent
 public class MenuHandler {
     @Inject
-    private final ConsoleRenderer renderer;
+    private  ConsoleRenderer renderer;
 
     public MenuHandler(ConsoleRenderer renderer) {
         this.renderer = renderer;
+    }
+
+    public MenuHandler() {
     }
 
     public Operation showMainMenu() {

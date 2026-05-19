@@ -34,11 +34,7 @@ public class UserServiceConsoleInterface  {
         this.menuHandler = menuHandler;
     }
 
-    public UserServiceConsoleInterface(UserService userService, ConsoleRenderer renderer, Mapper mapper) {
-        this.userService = userService;
-        this.renderer = renderer;
-        this.mapper = mapper;
-    }
+  
 
     public UserServiceConsoleInterface() {
     }

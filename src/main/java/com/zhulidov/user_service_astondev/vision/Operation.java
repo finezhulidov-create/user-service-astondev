@@ -1,7 +1,8 @@
 package com.zhulidov.user_service_astondev.vision;
 
-import java.util.Arrays;
+import com.zhulidov.user_service_astondev.config.annotations.AppComponent;
 
+import java.util.Arrays;
 public enum Operation {
     CREATE(1), READ_ALL(2),READ_BY_ID(3), UPDATE(4), DELETE(5), EXIT(6);
 
