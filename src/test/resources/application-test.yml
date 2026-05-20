@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:15.2:///testdb
+    username: postgres
+    password: postgres
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+
+logging:
+  level:
+    com.zhulidov.user_service_astondev: DEBUG
+    org.hibernate: WARN
