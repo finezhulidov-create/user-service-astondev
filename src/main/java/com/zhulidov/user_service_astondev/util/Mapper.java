@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public class Mapper {
     public UserDto toDto(User user){
-        return new UserDto(user.getId(), user.getName(), user.getEmail(), user.getAge(), user.getCreatedAt());
+        return new UserDto( user.getName(), user.getEmail(), user.getAge(), user.getCreatedAt());
     }
     public User toEntity(UserDto userDto){
         User user = new User();

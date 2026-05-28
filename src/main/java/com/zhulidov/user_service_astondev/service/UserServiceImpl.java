@@ -1,24 +1,26 @@
 package com.zhulidov.user_service_astondev.service;
 
-import com.zhulidov.user_service_astondev.config.annotations.AppComponent;
-import com.zhulidov.user_service_astondev.config.annotations.Inject;
-import com.zhulidov.user_service_astondev.dao.UserDAO;
+
+import com.zhulidov.user_service_astondev.dao.UserRepository;
 import com.zhulidov.user_service_astondev.dto.UserDto;
 import com.zhulidov.user_service_astondev.interfaces.UserService;
 import com.zhulidov.user_service_astondev.model.User;
 import com.zhulidov.user_service_astondev.util.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
-@AppComponent
+@Service
 public class UserServiceImpl implements UserService {
-   @Inject
-    private  UserDAO userDAO;
-   @Inject
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
    private Mapper mapper;
 
-    public UserServiceImpl(UserDAO userDAO, Mapper mapper) {
-        this.userDAO = userDAO;
+    public UserServiceImpl(UserRepository userRepository, Mapper mapper) {
+        this.userRepository = userRepository;
         this.mapper = mapper;
     }
 
@@ -32,27 +34,27 @@ public class UserServiceImpl implements UserService {
         user.setName(userDto.name());
         user.setEmail(userDto.email());
         user.setCreatedAt(LocalDateTime.now());
-        userDAO.saveUser(user);
+        userRepository.save(user);
     }
 
     @Override
     public UserDto getUserById(Long id) {
-        return mapper.toDto(userDAO.getUserById(id));
+        return mapper.toDto(userRepository.findById(id).orElseThrow());
     }
 
     @Override
     public List<UserDto> getAllUsers() {
-        return userDAO.getAllUsers().stream().map(user -> mapper.toDto(user)).toList();
+        return userRepository.findAll().stream().map(user -> mapper.toDto(user)).toList();
     }
 
     @Override
     public void updateUser(UserDto userDto) {
       User user =  mapper.toEntity(userDto);
-        userDAO.updateUser(user);
+        userRepository.save(user);
     }
 
     @Override
     public void deleteUser(Long id) {
-        userDAO.deleteUser(id);
+        userRepository.delete(userRepository.findById(id).orElseThrow());
     }
 }
