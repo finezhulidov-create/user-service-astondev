@@ -13,15 +13,13 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    public UserController() {
-    }
 
     @PostMapping("/create")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto){
@@ -29,7 +27,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{$id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
      return ResponseEntity.ok(userService.getUserById(id));
     }
@@ -45,7 +43,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
-    @DeleteMapping("/delete/{$id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).build();
